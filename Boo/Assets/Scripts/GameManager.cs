@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     void ActivateCandle(Candle candle)
     {
-        candle.candleObject.GetComponent<MeshRenderer>().enabled= false;
+        candle.candleObject.GetComponent<CandleController>().ChangeLightState();
     }
 
     void GameOver()
