@@ -1,6 +1,8 @@
 ## Fonts
 license: Freeware, Non-Commercial
 link: https://www.fontspace.com/monster-pumpkin-font-f51512
+license: Demo
+link: https://www.fontspace.com/spooky-bluest-font-f82285
 
 ## Sounds
 04_Extinguishing of candle.wav by 16FThumaF -- https://freesound.org/s/499020/ -- License: Creative Commons 0
