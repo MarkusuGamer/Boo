@@ -120,6 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5381ba5b74047f4b12e289110f12c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightCandle: {fileID: 8300000, guid: 40b74ba3cf38c0743bff050f49996579, type: 3}
+  turnOffCandle: {fileID: 8300000, guid: adc9c241139a2aa4bb317af12b680795, type: 3}
 --- !u!82 &3421532995886678222
 AudioSource:
   m_ObjectHideFlags: 0
@@ -129,7 +131,7 @@ AudioSource:
   m_GameObject: {fileID: 1212558720810599442}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2602321188549141504, guid: e0a8525cf1bb17a41acc48fe0a925ff5, type: 2}
   m_audioClip: {fileID: 8300000, guid: 40b74ba3cf38c0743bff050f49996579, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1

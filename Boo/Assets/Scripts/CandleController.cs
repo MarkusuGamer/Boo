@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class CandleController : MonoBehaviour
 {
+    // ---- / Serialized Variables / ---- //
+    [SerializeField] private AudioClip lightCandle;
+    [SerializeField] private AudioClip turnOffCandle;
+    
+    // ---- / Private Variables / ---- //
     private Light _light;
     private bool _lightState;
     private AudioSource _audioSource;
@@ -25,11 +30,12 @@ public class CandleController : MonoBehaviour
         if (_lightState)
         {
             _light.enabled = true;
-            _audioSource.Play();
+            _audioSource.PlayOneShot(lightCandle);
         }
         else
         {
             _light.enabled = false;
+            _audioSource.PlayOneShot(turnOffCandle);
         }
     }
 }
