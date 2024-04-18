@@ -1,44 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[System.Serializable]
 public class Candle
 {
     public int candleOrder;
     public GameObject candleObject;
-
-    Candle(float timeToLight)
-    {
-        this.candleOrder = candleOrder;
-    }
 }
 public class GameManager : MonoBehaviour
 {
+    private ClickCandleController cc;
+
     public int Hp = 3;
 
     private int candleCount;
 
+    private List<int> NumberArr = new List<int>();
+
     [SerializeField] private GameObject candleObject;
 
-    [SerializeField] private Candle[] candles;
+    [SerializeField] private int howMuchCandles = 3;
+
+    private Candle[] candles;
     private Candle[] orderedCandles;
-    // Start is called before the first frame update
+    
     void Start()
     {
+        cc = GetComponent<ClickCandleController>();
+        candleCount = 0;
+        candles = new Candle[howMuchCandles];
+        for (int i = 0; i < howMuchCandles; i++)
+        {
+            NumberArr.Add(i);
+            candles[i] = new Candle();
+        }
+
+        for (int i = 0; i < howMuchCandles; i++)
+        {
+
+            int rndnumber = Random.Range(0, howMuchCandles - candleCount);
+            candleCount++;
+            candles[i].candleOrder = NumberArr[rndnumber];
+            NumberArr.RemoveAt(rndnumber);
+        }
+
+
+
         candleCount = 0;
         foreach(Candle candle in candles)
         {
             candle.candleObject = Instantiate(candleObject,10*(Quaternion.AngleAxis((360/candles.Length*candleCount),transform.up)*transform.forward),Quaternion.identity);
+            candle.candleObject.GetComponent<CandleController>().order = candle.candleOrder;
             candleCount++;
         }
         candleCount = 0;
         orderedCandles = new Candle[candles.Length];
+
+        while (candleCount < candles.Length)
+        {
+            foreach (Candle candle in candles)
+            {
+                if (candle.candleOrder == candleCount)
+                {
+                    orderedCandles[candleCount] = candle;
+                }
+            }
+            candleCount++;
+        }
+
+        candleCount = 0;
+
         CombinationStart();
     }
 
     // Update is called once per frame
-    void ClickCandle(int candleOrder)
+    public void ClickCandle(int candleOrder)
     {
         if (candleOrder == candleCount)
         {
@@ -52,17 +89,9 @@ public class GameManager : MonoBehaviour
 
     void CombinationStart()
     {
-        while (candleCount < candles.Length)
-        {
-            foreach(Candle candle in candles)
-            {
-                if (candle.candleOrder == candleCount)
-                {
-                    orderedCandles[candleCount] = candle;
-                }
-            }
-            candleCount++;
-        }
+        cc.enabled = false;
+
+        candleCount = 0;
 
         StartCoroutine(waiter());
     }
@@ -71,14 +100,24 @@ public class GameManager : MonoBehaviour
     {
         foreach (Candle candle in orderedCandles)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1f);
             ActivateCandle(candle);
+        }
+        cc.enabled = true;
+    }
+
+    void NextCandle()
+    {
+        candleCount++;
+        if(candleCount == howMuchCandles)
+        {
+            Win();
         }
     }
 
-        void NextCandle()
+    void Win()
     {
-        candleCount++;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     void Error()
@@ -89,6 +128,12 @@ public class GameManager : MonoBehaviour
         {
             GameOver();
         }
+
+        foreach(Candle candle in candles)
+        {
+            candle.candleObject.GetComponent<CandleController>().ForceState(true);
+        }
+
         CombinationStart();
     }
 
@@ -99,6 +144,6 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-
+        SceneManager.LoadScene(SceneManager.sceneCount-1);
     }
 }

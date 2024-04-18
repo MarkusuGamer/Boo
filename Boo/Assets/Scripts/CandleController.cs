@@ -10,7 +10,7 @@ public class CandleController : MonoBehaviour
     private Light _light;
     private bool _lightState;
     private AudioSource _audioSource;
-    
+    public int order;
     private void Start()
     {
         _light = GetComponentInChildren<Light>();
@@ -18,6 +18,12 @@ public class CandleController : MonoBehaviour
         _lightState = _light.enabled;
     }
 
+
+    public void ForceState(bool lit)
+    {
+        _light.enabled = lit;
+        _lightState = lit;
+    }
     public bool IsCandleLit()
     {
         return _lightState;
