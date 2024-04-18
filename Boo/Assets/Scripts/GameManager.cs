@@ -50,7 +50,14 @@ public class GameManager : MonoBehaviour
         candleCount = 0;
         foreach(Candle candle in candles)
         {
-            candle.candleObject = Instantiate(candleObject,10*(Quaternion.AngleAxis((360/candles.Length*candleCount),transform.up)*transform.forward),Quaternion.identity);
+            Vector3 upVector = new Vector3(0, -0.85f, 0.53f);
+            Vector3 forwardVector = Vector3.Cross(upVector, transform.forward);
+
+            Vector3 offsetPosition = new Vector3(0, -1.8f, 0);
+            float circleRadius = 9;
+            float angleOffset = 19;
+            
+            candle.candleObject = Instantiate(candleObject, offsetPosition + circleRadius * (Quaternion.AngleAxis((angleOffset + (360 / candles.Length * candleCount)), upVector) * forwardVector),Quaternion.identity);
             candle.candleObject.GetComponent<CandleController>().order = candle.candleOrder;
             candleCount++;
         }
