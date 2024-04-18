@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5381ba5b74047f4b12e289110f12c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  order: 0
 --- !u!1 &8222705906107242497
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +198,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
