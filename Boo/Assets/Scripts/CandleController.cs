@@ -4,10 +4,12 @@ public class CandleController : MonoBehaviour
 {
     private Light _light;
     private bool _lightState;
+    private AudioSource _audioSource;
     
     private void Start()
     {
         _light = GetComponentInChildren<Light>();
+        _audioSource = GetComponentInChildren<AudioSource>();
         _lightState = _light.enabled;
     }
 
@@ -23,6 +25,7 @@ public class CandleController : MonoBehaviour
         if (_lightState)
         {
             _light.enabled = true;
+            _audioSource.Play();
         }
         else
         {

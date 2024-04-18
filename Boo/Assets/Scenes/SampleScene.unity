@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hp: 3
-  candleObject: {fileID: 1212558720810599442, guid: 5be4ce845b944eb43b141a63db8825c9, type: 3}
+  candleObject: {fileID: 1212558720810599442, guid: f0996be9c70071445b287f28a16c2876, type: 3}
   candles:
   - candleOrder: 0
     candleObject: {fileID: 0}
