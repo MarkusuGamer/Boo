@@ -5,50 +5,50 @@ using UnityEngine.SceneManagement;
 
 public class Candle
 {
-    public int candleOrder;
-    public GameObject candleObject;
+    public int CandleOrder;
+    public GameObject CandleObject;
 }
 public class GameManager : MonoBehaviour
 {
-    private ClickCandleController cc;
-
-    public int Hp = 3;
-
-    private int candleCount;
-
-    private List<int> NumberArr = new List<int>();
-
+    // ---- / Public Variables / ---- //
+    public int hp = 3;
+    
+    // ---- / Serialized Variables / ---- //
     [SerializeField] private GameObject candleObject;
-
     [SerializeField] private int howMuchCandles = 3;
-
-    private Candle[] candles;
-    private Candle[] orderedCandles;
+    
+    // ---- / Private Variables / ---- //
+    private ClickCandleController _clickCandleController;
+    private int _candleCount;
+    private List<int> _numberArr = new List<int>();
+    
+    private Candle[] _candles;
+    private Candle[] _orderedCandles;
     
     void Start()
     {
-        cc = GetComponent<ClickCandleController>();
-        candleCount = 0;
-        candles = new Candle[howMuchCandles];
+        _clickCandleController = GetComponent<ClickCandleController>();
+        _candleCount = 0;
+        _candles = new Candle[howMuchCandles];
         for (int i = 0; i < howMuchCandles; i++)
         {
-            NumberArr.Add(i);
-            candles[i] = new Candle();
+            _numberArr.Add(i);
+            _candles[i] = new Candle();
         }
 
         for (int i = 0; i < howMuchCandles; i++)
         {
 
-            int rndnumber = Random.Range(0, howMuchCandles - candleCount);
-            candleCount++;
-            candles[i].candleOrder = NumberArr[rndnumber];
-            NumberArr.RemoveAt(rndnumber);
+            int randomNumber = Random.Range(0, howMuchCandles - _candleCount);
+            _candleCount++;
+            _candles[i].CandleOrder = _numberArr[randomNumber];
+            _numberArr.RemoveAt(randomNumber);
         }
 
 
 
-        candleCount = 0;
-        foreach(Candle candle in candles)
+        _candleCount = 0;
+        foreach(Candle candle in _candles)
         {
             Vector3 upVector = new Vector3(0, -0.85f, 0.53f);
             Vector3 forwardVector = Vector3.Cross(upVector, transform.forward);
@@ -57,34 +57,33 @@ public class GameManager : MonoBehaviour
             float circleRadius = 9;
             float angleOffset = 19;
             
-            candle.candleObject = Instantiate(candleObject, offsetPosition + circleRadius * (Quaternion.AngleAxis((angleOffset + (360 / candles.Length * candleCount)), upVector) * forwardVector),Quaternion.identity);
-            candle.candleObject.GetComponent<CandleController>().order = candle.candleOrder;
-            candleCount++;
+            candle.CandleObject = Instantiate(candleObject, offsetPosition + circleRadius * (Quaternion.AngleAxis((angleOffset + (360 / _candles.Length * _candleCount)), upVector) * forwardVector),Quaternion.identity);
+            candle.CandleObject.GetComponent<CandleController>().order = candle.CandleOrder;
+            _candleCount++;
         }
-        candleCount = 0;
-        orderedCandles = new Candle[candles.Length];
+        _candleCount = 0;
+        _orderedCandles = new Candle[_candles.Length];
 
-        while (candleCount < candles.Length)
+        while (_candleCount < _candles.Length)
         {
-            foreach (Candle candle in candles)
+            foreach (Candle candle in _candles)
             {
-                if (candle.candleOrder == candleCount)
+                if (candle.CandleOrder == _candleCount)
                 {
-                    orderedCandles[candleCount] = candle;
+                    _orderedCandles[_candleCount] = candle;
                 }
             }
-            candleCount++;
+            _candleCount++;
         }
 
-        candleCount = 0;
+        _candleCount = 0;
 
         CombinationStart();
     }
 
-    // Update is called once per frame
     public void ClickCandle(int candleOrder)
     {
-        if (candleOrder == candleCount)
+        if (candleOrder == _candleCount)
         {
             NextCandle();
         }
@@ -96,27 +95,27 @@ public class GameManager : MonoBehaviour
 
     void CombinationStart()
     {
-        cc.enabled = false;
+        _clickCandleController.enabled = false;
 
-        candleCount = 0;
+        _candleCount = 0;
 
-        StartCoroutine(waiter());
+        StartCoroutine(Waiter());
     }
 
-    IEnumerator waiter()
+    IEnumerator Waiter()
     {
-        foreach (Candle candle in orderedCandles)
+        foreach (Candle candle in _orderedCandles)
         {
             yield return new WaitForSeconds(1f);
             ActivateCandle(candle);
         }
-        cc.enabled = true;
+        _clickCandleController.enabled = true;
     }
 
     void NextCandle()
     {
-        candleCount++;
-        if(candleCount == howMuchCandles)
+        _candleCount++;
+        if(_candleCount == howMuchCandles)
         {
             Win();
         }
@@ -129,16 +128,16 @@ public class GameManager : MonoBehaviour
 
     void Error()
     {
-        candleCount = 0;
-        Hp--;
-        if(Hp== 0)
+        _candleCount = 0;
+        hp--;
+        if(hp== 0)
         {
             GameOver();
         }
 
-        foreach(Candle candle in candles)
+        foreach(Candle candle in _candles)
         {
-            candle.candleObject.GetComponent<CandleController>().ForceState(true);
+            candle.CandleObject.GetComponent<CandleController>().ForceState(false);
         }
 
         CombinationStart();
@@ -146,7 +145,7 @@ public class GameManager : MonoBehaviour
 
     void ActivateCandle(Candle candle)
     {
-        candle.candleObject.GetComponent<CandleController>().ChangeLightState();
+        candle.CandleObject.GetComponent<CandleController>().ChangeLightState();
     }
 
     void GameOver()

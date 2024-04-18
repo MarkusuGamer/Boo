@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +8,7 @@ public class MainMenuController : MonoBehaviour
     
     public void Play()
     {
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
     public void SettingsMenu()
@@ -25,5 +24,10 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         settingsMenu.SetActive(false);
+    }
+    
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
     }
 }

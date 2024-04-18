@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class ClickCandleController : MonoBehaviour
 {
-    private GameManager gm;
+    // ---- / Private Variables / ---- //
+    private GameManager _gameManager;
 
     private void Start()
     {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     private void Update()
     {
@@ -17,7 +18,7 @@ public class ClickCandleController : MonoBehaviour
                 if (hit.collider.gameObject.TryGetComponent(out CandleController candleController))
                 {
                     candleController.ChangeLightState();
-                    gm.ClickCandle(candleController.order);
+                    _gameManager.ClickCandle(candleController.order);
                 }
             }
         }
